@@ -1,4 +1,4 @@
-import pymysql
+import pymysql as pm
 import logging
 import werkzeug
 from flask import request, g
@@ -23,29 +23,29 @@ model_join = ns.model('user_join', {
 })
 
 
-@ns.route('/join')
-class UserJoin(Resource):
-    @ns.doc(response={200: 'Success', 300: 'Redirected', 400: 'Invalid Argument', 500: 'Mapping Key Error'})
-    @ns.expect(model_join)
+@ns.route('/')
+@ns.doc(response={200: 'Success', 300: 'Redirected', 400: 'Invalid Argument', 500: 'Mapping Key Error'})
+@ns.expect(model_join)
+class JoinUser(Resource):
     def post(self, data):
         '''
         회원가입
         :return:
         '''
 
-        obj = {}
-        conn = g.db
+        # conn = g.db
+        # cur = conn.cursor()
 
         try:
             args = request.json
-            unique_key = ''
-            name = ''
+            print('args:', args)
 
             sql = f"""
-                INSERT INTO untime.tb_user
-                VALUES({unique_key}, {name}, {pw}, {phone}, {upjang}, {type}, {license})
-            """
+                    INSERT INTO untime.tb_user
+                    VALUES({args['unique_key']}, {args['name']}, {args['pw']}, {args['phone']}, {args['upjang']}, {args['type']}, {args['license']})
+                """
         except Exception as e:
             print('join 에러 발생!', e)
 
         return {'result': 'success', 'data': args}
+
