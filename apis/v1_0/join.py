@@ -4,6 +4,7 @@ import werkzeug
 from flask import request, g
 from flask_restplus import Namespace, fields, Resource, reqparse
 from datetime import datetime
+from app import bcrypt
 
 logger = logging.getLogger()
 ns = Namespace('join', 'User Join api')
@@ -41,21 +42,22 @@ class JoinUser(Resource):
             args = request.json
             print('args:', args)
             now = datetime.now().strftime("%Y%m%d")
+            encrypt_pw = bcrypt.generate_password_hash(args['pw'])
 
             sql = f"""
                     INSERT INTO untime.tb_user
-                    VALUES(NULL, {args['name']}, {args['pw']}, {args['phone']}, {args['upjang']}, 
+                    VALUES(NULL, {args['name']}, {encrypt_pw}, {args['phone']}, {args['upjang']}, 
                     {args['type']}, {args['license']}, {now})
                 """
             cur.execute(sql)
             conn.commit()
+
+            return {'result': 'success'}
         except Exception as e:
             print('join 에러 발생!', e)
             return {'result': 'fail', 'message': e}
         finally:
             conn.close()
-
-        return {'result': 'success', 'data': args}
 
 
 @ns.route('/sms')

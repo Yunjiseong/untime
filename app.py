@@ -1,11 +1,15 @@
 import werkzeug
 from flask import Flask, request, g
+from flask_bcrypt import Bcrypt
 from blueprints.v1_0 import blueprint as api_v1_0
 from config.db_config import DataConfig as cf
 from sqlalchemy import pool
 import pymysql as pm
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
+app.config['SECRET_KEY'] = 'untime is a perfect app'
+app.config['BCRYPT_LEVEL'] = 10
+bcrypt = Bcrypt(app)
 
 # @app.before_first_request: 웹 기동 후 처음 들어오는 http 요청에서만 실행
 
