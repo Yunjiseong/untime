@@ -1,6 +1,7 @@
 from flask_restplus import Api
 from flask import Blueprint
 from apis.v1_0.join import ns as join
+from apis.v1_0.login import ns as login
 
 authorization = {
     'Bearer Auth': {'type': 'apiKey', 'in': 'header', 'name': 'Authorization'},
@@ -19,3 +20,4 @@ api = Api = Api(
 )
 
 api.add_namespace(join)
+api.add_namespace(login)
