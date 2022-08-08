@@ -50,10 +50,8 @@ class LoginUser(Resource):
             args = request.json
             if login_check(cur, args['id'], args['pw']):
                 access_token = create_access_token(identity=args['user_seq'], expires_delta=False)
-
-
         except Exception as e:
-
+            print('에러 발생!', e)
 
 
 
