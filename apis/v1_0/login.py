@@ -25,7 +25,7 @@ model_login = ns.model('user_login',{
 ### login_service
 def login_check(cur, ut_id, ut_pw):
     sql = "SELECT PW, USER_SEQ FROM untime.tb_user WHERE id=%s"
-    cur.execute(sql, ut_id)
+    # cur.execute(sql, ut_id)
     data = cur.fetchone()
     if data is None:
         return -1

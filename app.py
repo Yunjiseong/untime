@@ -7,9 +7,6 @@ from sqlalchemy import pool
 import pymysql as pm
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['SECRET_KEY'] = 'untime is a perfect app'
-app.config['BCRYPT_LEVEL'] = 10
-bcrypt = Bcrypt(app)
 
 # @app.before_first_request: 웹 기동 후 처음 들어오는 http 요청에서만 실행
 
@@ -31,6 +28,10 @@ app.register_blueprint(api_v1_0)
 
 db_conf, db_kw_conf = cf.untime_db_config(False)
 app.db_master_pool = pool.QueuePool(lambda: pm.connect(**db_conf), **db_kw_conf)
+
+app.config['SECRET_KEY'] = 'untime is a perfect app'
+app.config['BCRYPT_LEVEL'] = 10
+bcrypt = Bcrypt(app)
 
 if __name__ == '__main__':
     app.run(use_reloader=True)
